@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Enviar pregunta</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    body {
+      font-family: sans-serif;
+      max-width: 600px;
+      margin: 40px auto;
+      padding: 20px;
+    }
+    label, input, button {
+      display: block;
+      width: 100%;
+      margin-bottom: 15px;
+    }
+  </style>
+</head>
+<body>
+  <h1>Haz tu pregunta</h1>
+  <form id="questionForm">
+    <label for="question">Pregunta:</label>
+    <input type="text" id="question" name="question" required>
+    <button type="submit">Enviar</button>
+  </form>
+
+  <p id="responseMessage"></p>
+
+  <script>
+    document.getElementById('questionForm').addEventListener('submit', async (e) => {
+      e.preventDefault();
+
+      const question = document.getElementById('question').value;
+
+      try {
+        const response = await fetch('https://n8n.icc-e.org/webhook-test/chatbot', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({ question })
+        });
+
+        if (response.ok) {
+          document.getElementById('responseMessage').textContent = 'Pregunta enviada correctamente.';
+        } else {
+          document.getElementById('responseMessage').textContent = 'Error al enviar la pregunta.';
+        }
+      } catch (error) {
+        document.getElementById('responseMessage').textContent = 'Error de conexión.';
+      }
+    });
+  </script>
+</body>
+</html>
