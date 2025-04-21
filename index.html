@@ -35,12 +35,8 @@
       const question = document.getElementById('question').value;
 
       try {
-        const response = await fetch('https://n8n.icc-e.org/webhook-test/chatbot', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json'
-          },
-          body: JSON.stringify({ question })
+        const response = await fetch(`https://n8n.icc-e.org/webhook-test/chatbot?question=${encodeURIComponent(question)}`, {
+          method: 'GET',
         });
 
         if (response.ok) {
